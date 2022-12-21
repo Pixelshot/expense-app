@@ -1,7 +1,11 @@
+import Modal from '~/components/util/Modal';
+
 export default function RawExpenses() {
   return (
     <div className="">
-      <h1>Raw Expenses</h1>
+      <Modal>
+        <h1>Raw Expenses</h1>
+      </Modal>
     </div>
   );
 }

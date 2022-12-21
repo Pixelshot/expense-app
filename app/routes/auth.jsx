@@ -1,9 +1,10 @@
+import AuthForm from '~/components/auth/AuthForm';
 import authStyles from '~/styles/auth.css';
 
 export default function AuthPage() {
   return (
     <div>
-      <h1>User authentication</h1>
+      <AuthForm />
     </div>
   );
 }
