@@ -1,7 +1,7 @@
 import ChartBar from './ChartBar';
 
 function Chart({ expenses }) {
-  console.log(expenses);
+  // console.log(expenses);
   const chartDataPoints = [
     { label: 'Jan', value: 0 },
     { label: 'Feb', value: 0 },
