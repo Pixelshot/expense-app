@@ -19,7 +19,10 @@ export default function AddExpensesPage() {
 
 export async function action({ request }) {
   const formData = await request.formData();
+  // To obtain data from formData, we need to use the get('name') method
+  // The other way of obtaining is to convert formData into an object like below
   const expenseData = Object.fromEntries(formData);
+  // console.log(expenseData, formData.get('title'));
 
   try {
     validateExpenseInput(expenseData);
@@ -28,6 +31,6 @@ export async function action({ request }) {
     return error;
   }
 
-  await addExpense(expenseData);
+  await addExpense(expenseData); // This is where form connects with server
   return redirect('/expenses');
 }
