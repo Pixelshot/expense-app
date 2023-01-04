@@ -15,3 +15,16 @@ export async function addExpense(expenseData) {
     throw error;
   }
 }
+
+export async function getExpenses() {
+  // Use .findMany() by Prisma to extract all data
+  // If no argument is passed inside of .findMany() then Prisma will simply return all data
+  // Here we're using orderBy key option to return data based of newest to oldest date
+  // orderBy is a key option provided by Prisma
+  // It's based off key/value since it's in an object
+  try {
+    return prisma.expense.findMany({ orderBy: { date: 'desc' } });
+  } catch (error) {
+    console.log(error);
+  }
+}
