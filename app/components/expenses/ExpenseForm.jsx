@@ -7,6 +7,7 @@ function ExpenseForm() {
   const validationErrors = useActionData();
 
   // This code is just to show how to use useSubmit() hook
+  // For more info, see vid 63
 
   // import { useSubmit} from '@remix-run/react'
 
