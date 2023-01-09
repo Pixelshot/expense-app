@@ -3,6 +3,8 @@ import {
   Link,
   useActionData,
   useLoaderData,
+  useMatches,
+  useParams,
   useTransition as useNavigation,
 } from '@remix-run/react';
 
@@ -10,15 +12,31 @@ import {
 
 // useActionData() and useLoaderData() can also be called in a component, not just in a route file.
 
+// useMatches() hook provides an array of objects
+// The id property of each object shows active route as its value
+// If that route has data in its loader(), it'll be shown in the data object
+// We can extract the data and use it here
+// This is what it means by leveraging on parent's loader()
+
+// We can use useParams() hook to obtain current id and match it with the data's id that we've gotten from useMatches() to extract the particular data
+
 function ExpenseForm() {
   const today = new Date().toISOString().slice(0, 10); // yields something like 2023-09-10
   const validationErrors = useActionData();
   const navigation = useNavigation();
+  const params = useParams();
+  const matches = useMatches();
+
+  const expenses = matches.find(
+    (match) => match.id === 'routes/__app/expenses'
+  );
+
+  const expenseData = expenses.data.find((expense) => expense.id === params.id);
 
   // The loader data is coming from $id.jsx
   // We're bypassing useLoaderData() in there and coming straight here to unpack the data for edit
   // More info, see #67
-  const expenseData = useLoaderData();
+  // const expenseData = useLoaderData();
 
   // Our form is unaware of the details of an id's data
   // So we create default values using expenseData to populate the form with its data or set them to an empty string so a new form can be submitted
