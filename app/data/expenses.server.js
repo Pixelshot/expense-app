@@ -28,3 +28,11 @@ export async function getExpenses() {
     console.log(error);
   }
 }
+
+export async function getExpense(id) {
+  try {
+    return await prisma.expense.findFirst({ where: { id } });
+  } catch (error) {
+    console.log(error);
+  }
+}

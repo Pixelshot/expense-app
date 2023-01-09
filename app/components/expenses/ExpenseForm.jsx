@@ -2,6 +2,7 @@ import {
   Form,
   Link,
   useActionData,
+  useLoaderData,
   useTransition as useNavigation,
 } from '@remix-run/react';
 
@@ -14,6 +15,25 @@ function ExpenseForm() {
   const validationErrors = useActionData();
   const navigation = useNavigation();
 
+  // The loader data is coming from $id.jsx
+  // We're bypassing useLoaderData() in there and coming straight here to unpack the data for edit
+  // More info, see #67
+  const expenseData = useLoaderData();
+
+  // Our form is unaware of the details of an id's data
+  // So we create default values using expenseData to populate the form with its data or set them to an empty string so a new form can be submitted
+
+  const defaultValues = expenseData
+    ? {
+        title: expenseData.title,
+        amount: expenseData.amount,
+        date: expenseData.date,
+      }
+    : {
+        title: '',
+        amount: '',
+        date: '',
+      };
   // This useTransition()/useNavigation() hook can only work with <Form /> not <form />
 
   // Letting the user know what's going on with the submitted form
@@ -24,7 +44,14 @@ function ExpenseForm() {
     <Form method="post" className="form" id="expense-form">
       <p>
         <label htmlFor="title">Expense Title</label>
-        <input type="text" id="title" name="title" required maxLength={30} />
+        <input
+          type="text"
+          id="title"
+          name="title"
+          required
+          maxLength={30}
+          defaultValue={defaultValues.title}
+        />
       </p>
 
       <div className="form-row">
@@ -37,11 +64,21 @@ function ExpenseForm() {
             min="0"
             step="0.01"
             required
+            defaultValue={defaultValues.amount}
           />
         </p>
         <p>
           <label htmlFor="date">Date</label>
-          <input type="date" id="date" name="date" max={today} required />
+          <input
+            type="date"
+            id="date"
+            name="date"
+            max={today}
+            required
+            defaultValue={
+              defaultValues.date ? defaultValues.date.slice(0, 10) : ''
+            }
+          />
         </p>
       </div>
       {validationErrors && (
