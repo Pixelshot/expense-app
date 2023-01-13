@@ -41,7 +41,12 @@ function ExpenseForm() {
   const isSubmitting = navigation.state !== 'idle';
 
   return (
-    <Form method="post" className="form" id="expense-form">
+    <Form
+      // We can specify the method based on expenseData's existence. If it does then it means we're updating. Otherwise we're creating a new form
+      method={expenseData ? 'patch' : 'post'}
+      className="form"
+      id="expense-form"
+    >
       <p>
         <label htmlFor="title">Expense Title</label>
         <input
