@@ -26,7 +26,7 @@ export default function UpdateExpensesPage() {
 // We can use loader() from parent route(expenses.jsx) with useMatches() hook provided by Remix
 // The downside of this method is that the data that is being shown may not be the latest
 // For example, while looking at our app, someone might have entered a new expense but without refreshing our page, we won't be able to see this change
-// Having local loader() means we'll always have the updated version from our DB but it also means we're making an extra call to the DB
+// Having local loader() means we'll always have the updated version from our DB but it also means we're making an extra call to it
 // // loader() has a params object that we can use to match the id inside of our Prisma DB
 // export async function loader({ params }) {
 //   // get the function from expenses.server.js and use it to match our params
@@ -51,7 +51,7 @@ export async function action({ request, params }) {
     await updateExpense(expenseId, expenseData);
     return redirect('/expenses');
   } else if (request.method === 'DELETE') {
-    // This else if statement is redundant because there are only two methods coming this: PATCH & DELETE but for the sake of clarity, we're going to keep it as such
+    // This else if statement is redundant because there are only two methods coming this way: PATCH & DELETE but for the sake of clarity, we're going to keep it as such
     await deleteExpense(expenseId);
     return redirect('/expenses');
   }

@@ -23,6 +23,10 @@ import {
 function ExpenseForm() {
   const today = new Date().toISOString().slice(0, 10); // yields something like 2023-09-10
   const validationErrors = useActionData();
+  // validationErrors is coming from add.jsx
+  // Specifically from catch block inside of action()
+  // Inside of catch block there's an error object
+  // By returning that object we can catch it here on the front end and display it. See line #112
   const navigation = useNavigation();
   const params = useParams();
   const matches = useMatches();
@@ -39,7 +43,7 @@ function ExpenseForm() {
   // const expenseData = useLoaderData();
 
   // Our form is unaware of the details of an id's data
-  // So we create default values using expenseData to populate the form with its data or set them to an empty string so a new form can be submitted
+  // So we create default values using expenseData to populate the form with original data or set them to an empty string so a new form can be submitted
 
   const defaultValues = expenseData
     ? {
@@ -60,7 +64,7 @@ function ExpenseForm() {
 
   return (
     <Form
-      // We can specify the method based on expenseData's existence. If it does then it means we're updating. Otherwise we're creating a new form
+      // We can specify the method based on expenseData's existence. If it does, then it means we're updating. Otherwise we're creating a new form
       method={expenseData ? 'patch' : 'post'}
       className="form"
       id="expense-form"
@@ -104,6 +108,7 @@ function ExpenseForm() {
           />
         </p>
       </div>
+      {/* If validationErros is triggered, then: */}
       {validationErrors && (
         <ul>
           {Object.values(validationErrors).map((error) => (
