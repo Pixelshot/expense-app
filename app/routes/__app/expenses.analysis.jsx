@@ -5,10 +5,6 @@ import { json } from '@remix-run/node';
 import { getExpenses } from '~/data/expenses.server';
 import { useCatch, useLoaderData } from '@remix-run/react';
 
-// TODO:
-// 1. Connect db to chart ✅
-// 2. CatchBoundary() is used whenever there is no data
-
 export default function ExpensesAnalysisPage() {
   const expenses = useLoaderData();
   return (
