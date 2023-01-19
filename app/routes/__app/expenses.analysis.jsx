@@ -1,26 +1,48 @@
 import ExpenseStatistics from '~/components/expenses/ExpenseStatistics';
 import Chart from '~/components/expenses/Chart';
+import Error from '~/components/util/Error';
+import { json } from '@remix-run/node';
+import { getExpenses } from '~/data/expenses.server';
+import { useCatch, useLoaderData } from '@remix-run/react';
 
-const DUMMY_EXPENSES = [
-  {
-    id: 1,
-    title: 'First Expense',
-    amount: 12.99,
-    date: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    title: 'Second Expense',
-    amount: 16.99,
-    date: new Date().toISOString(),
-  },
-];
+// TODO:
+// 1. Connect db to chart ✅
+// 2. CatchBoundary() is used whenever there is no data
 
 export default function ExpensesAnalysisPage() {
+  const expenses = useLoaderData();
   return (
     <main>
-      <Chart expenses={DUMMY_EXPENSES} />
-      <ExpenseStatistics expenses={DUMMY_EXPENSES} />
+      <Chart expenses={expenses} />
+      <ExpenseStatistics expenses={expenses} />
+    </main>
+  );
+}
+
+export async function loader() {
+  const expenses = await getExpenses();
+  if (!expenses || expenses.length === 0) {
+    throw json(
+      { message: 'Error: Could not create chart for expanse(s)' },
+      {
+        status: 404,
+        statusText: 'Expenses not found',
+      }
+    );
+  }
+  return expenses; // same as return json(expenses) but Remix does it automatically for us
+}
+
+export function CatchBoundary() {
+  const caughtResponse = useCatch();
+  return (
+    <main>
+      <Error title={caughtResponse.statusText}>
+        <p>
+          {caughtResponse.data?.message ||
+            'Could not create chart for expense(s)'}
+        </p>
+      </Error>
     </main>
   );
 }

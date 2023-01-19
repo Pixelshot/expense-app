@@ -2,7 +2,6 @@ import {
   Form,
   Link,
   useActionData,
-  useLoaderData,
   useMatches,
   useParams,
   useTransition as useNavigation,
@@ -36,6 +35,11 @@ function ExpenseForm() {
   );
 
   const expenseData = expenses.data.find((expense) => expense.id === params.id);
+
+  // if the url is an id but the id is not in the database, then return a paragraph with the explanation
+  if (params.id && !expenseData) {
+    return <p>Invalid expense id.</p>;
+  }
 
   // The loader data is coming from $id.jsx
   // We're bypassing useLoaderData() in there and coming straight here to unpack the data for edit

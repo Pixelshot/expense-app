@@ -1,20 +1,7 @@
-const DUMMY_EXPENSES = [
-  {
-    id: 1,
-    title: 'First Expense',
-    amount: 12.99,
-    date: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    title: 'Second Expense',
-    amount: 16.99,
-    date: new Date().toISOString(),
-  },
-];
+import { getExpenses } from '~/data/expenses.server';
 
 export function loader() {
-  return DUMMY_EXPENSES;
+  return getExpenses();
 }
 
 // import { useNavigate } from '@remix-run/react';

@@ -10,6 +10,10 @@ export default function ExpenseOutlet() {
   // server-side codes(eg: console.log()) in functions outside of loader() can end up on the front-end. Therefore, it's best to keep it inside of loader() since they always only run on the server-side
   // Similar concept applies to front-end codes only as well
   const expenses = useLoaderData();
+
+  // Whenever we throw an error, the closest CatchBoundary() will be triggered
+  // Not having any data at the beginning is not exactly an error, therefore a conditional statement is better suited for this task
+  const hasExpenses = expenses && expenses.length > 0;
   return (
     <>
       <Outlet />
@@ -24,7 +28,18 @@ export default function ExpenseOutlet() {
             <span>Load Raw Data</span>
           </a>
         </section>
-        <ExpensesList expenses={expenses} />
+        {/* If there is an expense data to load, then load othwerwise direct the user to the add ui. See #78 */}
+        {/* Instead of using CatchBoundary() we're doing it with conditional statement instead */}
+        {/* Goes to show there are more than one way to do things */}
+        {hasExpenses && <ExpensesList expenses={expenses} />}
+        {!hasExpenses && (
+          <section id="no-expenses">
+            <h1>No Expenses found</h1>
+            <p>
+              Start by <Link to="add">adding some</Link> today!
+            </p>
+          </section>
+        )}
       </main>
     </>
   );
