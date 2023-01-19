@@ -65,6 +65,8 @@ function ExpenseForm() {
   return (
     <Form
       // We can specify the method based on expenseData's existence. If it does, then it means we're updating. Otherwise we're creating a new form
+      // This is how we manipulate multiple forms into one action
+      // Create a conditional statement and split the actual logic to handle the action in a separate file that does the job. So the action just has switch and calls the necessary function.
       method={expenseData ? 'patch' : 'post'}
       className="form"
       id="expense-form"
