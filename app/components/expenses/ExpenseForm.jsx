@@ -67,6 +67,8 @@ function ExpenseForm() {
   const isSubmitting = navigation.state !== 'idle';
 
   return (
+    // The name attribute is used to give us ACCESS to the data entered by the user
+    // This data is extracted in expenses.server.js
     <Form
       // We can specify the method based on expenseData's existence. If it does, then it means we're updating. Otherwise we're creating a new form
       // This is how we manipulate multiple forms into one action

@@ -1,12 +1,12 @@
 import { prisma } from './database.server';
 
 export async function addExpense(expenseData) {
-  //expenseData is coming from add.jsx
+  //expenseData is coming from <ExpenseForm>
   try {
     return await prisma.expense.create({
       data: {
         title: expenseData.title,
-        amount: +expenseData.amount,
+        amount: +expenseData.amount, // Even though the type has been defined as number in <Form>, data that we get from a form will always return in string format. This is why we're converting amount to number with the plus sign at the beginning
         date: new Date(expenseData.date),
       },
     });
