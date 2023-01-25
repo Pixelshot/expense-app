@@ -25,7 +25,7 @@ function ExpenseForm() {
   // validationErrors is coming from add.jsx
   // Specifically from catch block inside of action()
   // Inside of catch block there's an error object
-  // By returning that object we can catch it here on the front end and display it. See line #112
+  // By returning that object we can catch it here on the front end and display it. See below where validationErrors is used at ~ line #120
   const navigation = useNavigation();
   const params = useParams();
   const matches = useMatches();
