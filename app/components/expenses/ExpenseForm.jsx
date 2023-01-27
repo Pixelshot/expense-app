@@ -7,6 +7,9 @@ import {
   useTransition as useNavigation,
 } from '@remix-run/react';
 
+// Unlike a typical <form>, Remix's <Form> does not reload automatically upon submission. It stays in the single page application world and request is sent behind the scenes.
+// Since <Form> doesn't reload, we use @remixs-run/react's hook called useTransition()[This will be changed to useNavigation() in the future) to mimic the action/visual aspect of  data 'Loading...' stage when it's making request(s). See #64
+
 // useTransition() as useNavigation() because the name will be changed to useNavigation() in the near future
 
 // useActionData() and useLoaderData() can also be called in a component, not just in a route file.
