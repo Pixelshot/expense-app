@@ -9,13 +9,16 @@ import { FaPlus, FaDownload } from 'react-icons/fa';
 // To establish communication between the two sides, Remix uses response as the carrier to transport data
 
 export default function ExpenseLayout() {
-  // When we first visit a page, that page is prepared on the BACK-END with Remix
+  // When we first visit a page, that page is prepared on the BACK-END by Remix
   // This can be shown via console.log() command
   // console.log('This appears on front-end and back-end on first render'); // uncomment this line to test
   // As the log says: on first render, the log should appear on both front-end and back-end
   // But if we were to move to another link and return, it only appears on the front-end
-  // Meaning of single page application?: Pages that have been loaded will stick around in the background just in case if they're needed again
+  // This is how a single application works
   // Even though other links were not the inital page fetched, they are all subsequent navigation for this single page application
+  // But this also means any logs on the console would appear on both front-end and back-end
+  // Need to be weary on what is left for the console to pick up
+  // Question: All pages are prepped beforehand on the server side are ready to be sprung into action when called, minimising loading time?
   // As long as we don't refresh, we're in the single page applicatin zone and that means the server will not be fetching the entire page
   // See #66
 
