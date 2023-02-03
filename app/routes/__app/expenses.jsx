@@ -8,7 +8,7 @@ import { FaPlus, FaDownload } from 'react-icons/fa';
 // loader() is a server-side only function but the data inside of it is commonly used for front-end
 // To establish communication between the two sides, Remix uses response as the carrier to transport data
 
-export default function ExpenseLayout() {
+export default function ExpensesLayout() {
   // When we first visit a page, that page is prepared on the BACK-END by Remix
   // This can be shown via console.log() command
   // console.log('This appears on front-end and back-end on first render'); // uncomment this line to test

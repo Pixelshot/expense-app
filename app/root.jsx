@@ -53,6 +53,7 @@ function Document({ title, children }) {
 export default function App() {
   return (
     <Document>
+      {/* This Outlet is coming from _marketing.jsx which is coming from _marketing/index.jsx */}
       <Outlet />
     </Document>
   );
