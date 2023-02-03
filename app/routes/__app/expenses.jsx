@@ -1,3 +1,4 @@
+// /expenses => shared layout
 import { Link, Outlet, useLoaderData } from '@remix-run/react';
 import ExpensesList from '~/components/expenses/ExpensesList';
 import { getExpenses } from '~/data/expenses.server';
@@ -6,7 +7,7 @@ import { FaPlus, FaDownload } from 'react-icons/fa';
 // Remix will automatically wait for the promise to resolve before rendering a component.
 // All components of the same route has access to the routes useLoader() and useAction() data
 
-export default function ExpenseOutlet() {
+export default function ExpensesLayout() {
   // server-side codes(eg: console.log()) in functions outside of loader() can end up on the front-end. Therefore, it's best to keep it inside of loader() since they always only run on the server-side
   // Similar concept applies to front-end codes only as well
   const expenses = useLoaderData();
