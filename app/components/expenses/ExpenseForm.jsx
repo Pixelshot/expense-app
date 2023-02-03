@@ -7,6 +7,9 @@ import {
   useTransition as useNavigation,
 } from '@remix-run/react';
 
+// Unlike a typical <form>, Remix's <Form> does not reload automatically upon submission. It stays in the single page application world and request is sent behind the scenes.
+// Since <Form> doesn't reload, we use @remixs-run/react's hook called useTransition()[This will be changed to useNavigation() in the future) to mimic the action/visual aspect of  data 'Loading...' stage when it's making request(s). See #64
+
 // useTransition() as useNavigation() because the name will be changed to useNavigation() in the near future
 
 // useActionData() and useLoaderData() can also be called in a component, not just in a route file.
@@ -25,7 +28,7 @@ function ExpenseForm() {
   // validationErrors is coming from add.jsx
   // Specifically from catch block inside of action()
   // Inside of catch block there's an error object
-  // By returning that object we can catch it here on the front end and display it. See line #112
+  // By returning that object we can catch it here on the front end and display it. See below where validationErrors is used at ~ line #120
   const navigation = useNavigation();
   const params = useParams();
   const matches = useMatches();
@@ -67,6 +70,8 @@ function ExpenseForm() {
   const isSubmitting = navigation.state !== 'idle';
 
   return (
+    // The name attribute is used to give us ACCESS to the data entered by the user
+    // This data is extracted in expenses.server.js
     <Form
       // We can specify the method based on expenseData's existence. If it does, then it means we're updating. Otherwise we're creating a new form
       // This is how we manipulate multiple forms into one action

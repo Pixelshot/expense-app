@@ -34,9 +34,10 @@ export async function action({ request }) {
     validateExpenseInput(expenseData);
   } catch (error) {
     // If data is returned instead of being redirected, the data can be accessed in our component
+    // This data is being extracted via useActionDatat() in ExpenseForm.jsx
     return error;
   }
 
   await addExpense(expenseData); // This is where form connects with server
-  return redirect('/expenses');
+  return redirect('/expenses'); // Common pattern for returned response is to redirect the user to somewhere
 }

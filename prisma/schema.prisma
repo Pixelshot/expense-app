@@ -10,10 +10,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id       String    @id @default(auto()) @map("_id") @db.ObjectId
+  email    String    @unique
+  password String
+  expenses Expense[]
+}
+
 model Expense {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId // This is just prisma+mongodb stuff, not related to Remix
   title     String
   amount    Float
   date      DateTime
   dateAdded DateTime @default(now()) // now() is provided by Prisma
+  User      User     @relation(fields: [userId], references: [id])
+  userId    String   @db.ObjectId
 }
