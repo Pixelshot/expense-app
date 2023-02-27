@@ -123,7 +123,10 @@ function ExpenseForm() {
       {validationErrors && (
         <ul>
           {Object.values(validationErrors).map((error) => (
-            <li key={error}>{error}</li>
+            <>
+              <li key={error}>{error}</li>
+              <br />
+            </>
           ))}
         </ul>
       )}

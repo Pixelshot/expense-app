@@ -3,12 +3,14 @@ import {
   Link,
   useSearchParams,
   useTransition as useNavigation,
+  useActionData,
 } from '@remix-run/react';
 import { FaLock, FaUserPlus } from 'react-icons/fa';
 
 function AuthForm() {
   let [searchParams] = useSearchParams();
   const navigation = useNavigation(); // using this to enhance user experience
+  const validationErrors = useActionData(); // This is coming from catch block inside of auth.js
   const authMode = searchParams.get('mode') || 'login';
 
   const isSubmitting = navigation.state !== 'idle';
@@ -30,6 +32,16 @@ function AuthForm() {
         <label htmlFor="password">Password</label>
         <input type="password" id="password" name="password" minLength={7} />
       </p>
+      {validationErrors && (
+        <ul>
+          {Object.values(validationErrors).map((error) => (
+            <>
+              <li key={error}>{error}</li>
+              <br />
+            </>
+          ))}
+        </ul>
+      )}
       <div className="form-actions">
         <button disabled={isSubmitting}>
           {isSubmitting ? 'Authenticating...' : submitBtnCaption}

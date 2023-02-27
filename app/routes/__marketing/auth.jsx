@@ -1,4 +1,5 @@
 import AuthForm from '~/components/auth/AuthForm';
+import { validateCredentials } from '~/data/validation.server.js';
 import authStyles from '~/styles/auth.css';
 
 export default function AuthPage() {
@@ -17,6 +18,15 @@ export async function action({ request }) {
 
   const formData = await request.formData();
   const credentials = Object.entries(formData);
+
+  // Go through validation that has been defined in validation.server.js
+  try {
+    validateCredentials(credentials);
+  } catch (error) {
+    return error;
+    // This return is in data form and data can be extracted via useActionData on the client-side
+    // In our case we're extracting this in AuthForm
+  }
 
   if (authMode === 'login') {
     // login logic
