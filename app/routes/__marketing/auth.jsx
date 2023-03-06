@@ -1,6 +1,8 @@
 import AuthForm from '~/components/auth/AuthForm';
 import { validateCredentials } from '~/data/validation.server.js';
+import { signup } from '~/data/auth.server';
 import authStyles from '~/styles/auth.css';
+import { redirect } from '@remix-run/node';
 
 export default function AuthPage() {
   return (
@@ -17,7 +19,7 @@ export async function action({ request }) {
   const authMode = searchParams.get('mode') || 'login';
 
   const formData = await request.formData();
-  const credentials = Object.entries(formData);
+  const credentials = Object.fromEntries(formData);
 
   // Go through validation that has been defined in validation.server.js
   try {
@@ -28,10 +30,17 @@ export async function action({ request }) {
     // In our case we're extracting this in AuthForm
   }
 
-  if (authMode === 'login') {
-    // login logic
-  } else {
-    // sign up logic
+  try {
+    if (authMode === 'login') {
+      // login logic
+    } else {
+      await signup(credentials);
+      return redirect('/expenses');
+    }
+  } catch (error) {
+    if (error.status === 422) {
+      return { credentials: error.message };
+    }
   }
 }
 
