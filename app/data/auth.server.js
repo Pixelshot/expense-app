@@ -42,7 +42,7 @@ export async function signup({ email, password }) {
     data: { email: email, password: hashedPassword },
   });
 
-  createUserSession(user.id, '/expenses');
+  return createUserSession(user.id, '/expenses');
 }
 
 export async function login({ email, password }) {
