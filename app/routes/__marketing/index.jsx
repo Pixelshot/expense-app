@@ -46,4 +46,19 @@ export default function Index() {
   );
 }
 
-export function meta() {}
+export function meta() {
+  return {
+    title: 'RemixExpenses - The Complete App',
+    description: 'Manage your expenses with ease',
+  };
+}
+
+// This is the extraction from parent headers
+// For more explanation, see notes @ headers in __marketing.jsx
+export function headers({ actionHeaders, loaderHeaders, parentHeaders }) {
+  return {
+    'Cache-Control': parentHeaders.get('Cache-Control'),
+  };
+}
+
+export const handle = { disableJS: true };

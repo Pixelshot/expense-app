@@ -2,7 +2,7 @@ import { prisma } from './database.server';
 
 // === === === === === EXPENSES CRUD OPERATIONS === === === === ===
 
-export async function addExpense(expenseData) {
+export async function addExpense(expenseData, userId) {
   //expenseData is coming from <ExpenseForm>
   try {
     return await prisma.expense.create({
@@ -10,6 +10,7 @@ export async function addExpense(expenseData) {
         title: expenseData.title,
         amount: +expenseData.amount, // Even though the type has been defined as number in <Form>, data that we get from a form will always return in string format. This is why we're converting amount to number with the plus sign at the beginning
         date: new Date(expenseData.date),
+        User: { connect: { id: userId } }, // This line tells prisma that the creation of the expense should be connected to the existing user with the given id.
       },
     });
   } catch (error) {
@@ -17,13 +18,19 @@ export async function addExpense(expenseData) {
   }
 }
 
-export async function getExpenses() {
+export async function getExpenses(userId) {
+  if (!userId) {
+    throw new Error('Failed to get expenses.');
+  }
   // Use .findMany() by Prisma to extract all data
   // If no argument is passed inside of .findMany() then Prisma will simply return all data
   // It's based off key/value pair since it's an object
   // Here we're using orderBy key option to return data based on newest to oldest date
   try {
-    return prisma.expense.findMany({ orderBy: { date: 'desc' } });
+    return prisma.expense.findMany({
+      where: { userId },
+      orderBy: { date: 'desc' },
+    });
   } catch (error) {
     throw new Error('Failed to get expenses.');
   }

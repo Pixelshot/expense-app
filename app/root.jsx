@@ -7,14 +7,17 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useMatches,
 } from '@remix-run/react';
 
 import sharedStyles from '~/styles/shared.css';
 import Error from './components/util/Error';
 
+// This is a generic metadata that acts as a fallback
+// Metadata defined in child routes overtakes any metadata set by the parent
 export const meta = () => ({
   charset: 'utf-8',
-  title: 'New Remix App',
+  title: 'RemixExpenses',
   viewport: 'width=device-width,initial-scale=1',
 });
 
@@ -23,10 +26,12 @@ export const meta = () => ({
 
 // The differences for all of the functions will be their title and children(normal content or error content)
 function Document({ title, children }) {
+  const matches = useMatches();
+  const disableJS = matches.some((match) => match.handle?.disableJS);
   return (
     <html lang="en">
       <head>
-        <title>{title}</title>
+        {title && <title>{title}</title>}
         <Meta />
         <Links />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -43,7 +48,7 @@ function Document({ title, children }) {
       <body>
         {children}
         <ScrollRestoration />
-        <Scripts />
+        {!disableJS && <Scripts />}
         <LiveReload />
       </body>
     </html>

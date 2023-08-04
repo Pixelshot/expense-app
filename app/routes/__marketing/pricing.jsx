@@ -39,4 +39,19 @@ export default function PricingPage() {
   );
 }
 
-export function meta() {}
+export function meta() {
+  return {
+    title: 'Pricing',
+    description: 'See our pricing plans',
+  };
+}
+
+// This is the extraction from parent headers
+// For more explanation, see notes @ headers in __marketing.jsx
+export function headers({ actionHeaders, loaderHeaders, parentHeaders }) {
+  return {
+    'Cache-Control': parentHeaders.get('Cache-Control'),
+  };
+}
+
+export const handle = { disableJS: true };

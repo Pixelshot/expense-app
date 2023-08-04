@@ -4,6 +4,7 @@ import ExpenseForm from '~/components/expenses/ExpenseForm';
 import Modal from '~/components/util/Modal';
 import { addExpense } from '~/data/expenses.server';
 import { validateExpenseInput } from '~/data/validation.server';
+import { requireUserSession } from '~/data/auth.server';
 
 export default function AddExpensesPage() {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ export default function AddExpensesPage() {
 }
 
 export async function action({ request }) {
+  const userId = await requireUserSession(request);
   const formData = await request.formData();
   // To obtain data from formData, we need to use the get('name') method
   // The other way of obtaining is to convert formData into an object like below
@@ -38,6 +40,6 @@ export async function action({ request }) {
     return error;
   }
 
-  await addExpense(expenseData); // This is where form connects with server
+  await addExpense(expenseData, userId); // This is where form connects with server
   return redirect('/expenses'); // Common pattern for returned response is to redirect the user to somewhere
 }

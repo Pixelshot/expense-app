@@ -1,6 +1,8 @@
+import { json } from '@remix-run/node';
 import { Link, Outlet, useLoaderData } from '@remix-run/react';
 import ExpensesList from '~/components/expenses/ExpensesList';
 import { getExpenses } from '~/data/expenses.server';
+import { requireUserSession } from '~/data/auth.server';
 import { FaPlus, FaDownload } from 'react-icons/fa';
 
 // Remix will automatically wait for the promise to resolve before rendering a component.
@@ -25,7 +27,6 @@ export default function ExpensesLayout() {
   // server-side codes(eg: console.log()) in functions outside of loader() can end up on the front-end. Therefore, it's best to keep it inside of loader() since they always only run on the server-side
   // Similar concept applies to front-end codes only as well
   const expenses = useLoaderData();
-
   // Whenever we throw an error, the closest CatchBoundary() will be triggered
   // Not having any data at the beginning is not exactly an error, therefore a conditional statement is better suited for this task
   const hasExpenses = expenses && expenses.length > 0;
@@ -63,11 +64,27 @@ export default function ExpensesLayout() {
 // in this case, async can be omitted from loader() because the function that we're calling(getExpenses()) is already an async function that is resolved within itself via the return keyword. vid 65
 // Remix will automatically wait for the Promise to resolve before rendering any component that is calling their loaders
 // EG: ExpenseOutlet component above will only be rendered once the promise inside of loader() here is resolved
-export async function loader() {
-  const expenses = await getExpenses();
+export async function loader({ request }) {
+  const userId = await requireUserSession(request);
+
+  const expenses = await getExpenses(userId);
   // Remix will automatically wrap any return raw data into a response because technically, loader needs to return a response. See #66
-  // return json(expenses); // This is returning raw data(json format). But because of the explanation above, the result will be the same as below:
+  // return json(expenses);
+  // This is returning raw data(json format). But because of the explanation above, the result will be the same as below:
   // Don't forget to import {json} from @remix/node if you're using it
   // For more of this and explanation on single page see #66
-  return expenses;
+
+  // Using .json() gives us more options to send out more info like headers. See #107
+  return json(expenses, {
+    headers: {
+      'Cache-Control': 'max-age=3',
+    },
+  });
+}
+
+// For more explanation on headers, see notes @ headers in __marketing.jsx
+export function headers({ actionHeaders, loaderHeaders, parentHeaders }) {
+  return {
+    'Cache-Control': loaderHeaders.get('Cache-Control'),
+  };
 }

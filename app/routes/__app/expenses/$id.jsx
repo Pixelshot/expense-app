@@ -56,3 +56,16 @@ export async function action({ request, params }) {
     return redirect('/expenses');
   }
 }
+
+// meta function has an object attached to it
+// For more info see official docs. This app follows v1 guideline: https://remix.run/docs/en/main/route/meta
+// See #103
+export function meta({ params, location, data, parentsData }) {
+  const expense = parentsData['routes/__app/expenses'].find(
+    (expense) => expense.id === params.id
+  );
+  return {
+    title: expense.title,
+    description: 'Update expense',
+  };
+}

@@ -4,6 +4,7 @@ import Error from '~/components/util/Error';
 import { json } from '@remix-run/node';
 import { getExpenses } from '~/data/expenses.server';
 import { useCatch, useLoaderData } from '@remix-run/react';
+import { requireUserSession } from '~/data/auth.server';
 
 export default function ExpensesAnalysisPage() {
   const expenses = useLoaderData();
@@ -15,8 +16,9 @@ export default function ExpensesAnalysisPage() {
   );
 }
 
-export async function loader() {
-  const expenses = await getExpenses();
+export async function loader({ request }) {
+  const userId = await requireUserSession(request);
+  const expenses = await getExpenses(userId);
   if (!expenses || expenses.length === 0) {
     throw json(
       { message: 'Error: Could not create chart for expanse(s)' },

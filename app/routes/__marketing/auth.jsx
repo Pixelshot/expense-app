@@ -46,3 +46,11 @@ export async function action({ request }) {
 export function links() {
   return [{ rel: 'stylesheet', href: authStyles }];
 }
+
+// This is the extraction from parent headers
+// For more explanation, see notes @ headers in __marketing.jsx
+export function headers({ actionHeaders, loaderHeaders, parentHeaders }) {
+  return {
+    'Cache-Control': parentHeaders.get('Cache-Control'),
+  };
+}
